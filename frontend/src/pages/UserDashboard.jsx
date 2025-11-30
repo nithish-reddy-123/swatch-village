@@ -132,7 +132,7 @@ function UserDashboard({ user }) {
                             </div>
                             <p className="description">{problem.description}</p>
                             {problem.imageUrl && (
-                                <img src={`http://localhost:5000${problem.imageUrl}`} alt="Problem" className="problem-image" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                                <img src={`https://swatch-village.onrender.com${problem.imageUrl}`} alt="Problem" className="problem-image" style={{ maxWidth: '100%', marginTop: '10px' }} />
                             )}
                             <p className="reporter">Reported by: {problem.reportedBy?.username || 'Unknown'}</p>
                         </div>

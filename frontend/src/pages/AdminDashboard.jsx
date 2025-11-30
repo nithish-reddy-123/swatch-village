@@ -56,7 +56,7 @@ function AdminDashboard() {
                                 <p className="description">{problem.description}</p>
 
                                 {problem.imageUrl && (
-                                    <img src={`http://localhost:5000${problem.imageUrl}`} alt="Problem" className="problem-image" style={{ maxWidth: '200px', marginTop: '10px' }} />
+                                    <img src={`https://swatch-village.onrender.com${problem.imageUrl}`} alt="Problem" className="problem-image" style={{ maxWidth: '200px', marginTop: '10px' }} />
                                 )}
 
                                 {problem.location && problem.location.lat && (
