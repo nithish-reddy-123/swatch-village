@@ -18,5 +18,8 @@ export default defineConfig({
     preview: {
         host: "0.0.0.0",
         port: process.env.PORT || 5173, // SAME FOR PREVIEW
+        allowedHosts: [
+            "swatch-village-6.onrender.com",  // ADD THIS
+        ],
     },
 })
