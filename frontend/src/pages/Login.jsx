@@ -16,7 +16,7 @@ function Login({ onLogin }) {
         setError('');
 
         try {
-            const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
+            const endpoint = isRegistering ? 'https://swatch-village.onrender.com/api/auth/register' : 'https://swatch-village.onrender.com/api/auth/login';
             const res = await axios.post(endpoint, formData);
 
             if (isRegistering) {

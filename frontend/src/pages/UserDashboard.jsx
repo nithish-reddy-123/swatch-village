@@ -25,7 +25,7 @@ function UserDashboard({ user }) {
 
     const fetchProblems = async () => {
         try {
-            const res = await axios.get(`/api/problems?wardNumber=${user.wardNumber}`);
+            const res = await axios.get(`https://swatch-village.onrender.com/api/problems?wardNumber=${user.wardNumber}`);
             setProblems(res.data);
             setLoading(false);
         } catch (err) {
@@ -57,7 +57,7 @@ function UserDashboard({ user }) {
         }
 
         try {
-            await axios.post('/api/problems', formData, {
+            await axios.post('https://swatch-village.onrender.com/api/problems', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

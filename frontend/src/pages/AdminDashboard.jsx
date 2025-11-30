@@ -17,7 +17,7 @@ function AdminDashboard() {
 
     const fetchProblems = async () => {
         try {
-            const res = await axios.get('/api/problems');
+            const res = await axios.get('https://swatch-village.onrender.com/api/problems');
             setProblems(res.data);
             setLoading(false);
         } catch (err) {
@@ -28,7 +28,7 @@ function AdminDashboard() {
 
     const updateStatus = async (id, newStatus) => {
         try {
-            await axios.patch(`/api/problems/${id}`, { status: newStatus });
+            await axios.patch(`https://swatch-village.onrender.com/api/problems/${id}`, { status: newStatus });
             fetchProblems(); // Refresh list
         } catch (err) {
             alert('Error updating status');
