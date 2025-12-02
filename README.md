@@ -72,7 +72,3 @@ Swatch Village is a comprehensive web application designed to empower villagers 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License.
