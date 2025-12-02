@@ -24,7 +24,10 @@ router.post('/', async (req, res) => {
         res.json({ reply: text });
     } catch (error) {
         console.error('Error calling Gemini API:', error);
-        res.status(500).json({ error: 'Failed to generate response' });
+        if (error.response) {
+            console.error('API Response Error:', error.response.data);
+        }
+        res.status(500).json({ error: 'Failed to generate response', details: error.message });
     }
 });
 
