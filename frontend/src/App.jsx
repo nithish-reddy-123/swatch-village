@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import Chatbot from './components/Chatbot';
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
                     />
                     <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
+                <Chatbot />
             </div>
         </Router>
     );
