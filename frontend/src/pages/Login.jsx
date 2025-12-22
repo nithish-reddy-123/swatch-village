@@ -17,6 +17,7 @@ function Login({ onLogin }) {
 
         try {
             const endpoint = isRegistering ? 'https://swatch-village.onrender.com/api/auth/register' : 'https://swatch-village.onrender.com/api/auth/login';
+            // const endpoint = isRegistering ? 'http://localhost:5000/api/auth/register' : 'http://localhost:5000/api/auth/login';
             const res = await axios.post(endpoint, formData);
 
             if (isRegistering) {
@@ -27,6 +28,7 @@ function Login({ onLogin }) {
                 onLogin(res.data);
             }
         } catch (err) {
+            console.log("Error during authentication:", err);
             setError(err.response?.data?.error || 'An error occurred');
         }
     };
@@ -54,7 +56,15 @@ function Login({ onLogin }) {
                         required
                     />
                 </div>
-
+                {/* <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                    />
+                    </div> */}
                 {isRegistering && (
                     <>
                         <div className="form-group">
