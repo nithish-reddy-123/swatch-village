@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://nithishreddy20031007_db_user:<db_password>@cluster0.k6k0bhb.mongodb.net/?appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI ;
 console.log('Attempting to connect to MongoDB at:', MONGODB_URI);
 
 mongoose.connect(MONGODB_URI)

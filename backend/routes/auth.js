@@ -25,8 +25,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+        const data=await User.find();
         const user = await User.findOne({ username });
-
         if (!user || user.password !== password) { // Simple comparison for MVP
             return res.status(401).json({ error: 'Invalid credentials' });
         }
