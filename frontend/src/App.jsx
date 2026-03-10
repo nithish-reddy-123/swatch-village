@@ -7,6 +7,7 @@ import Events from './pages/Events';
 import EmergencyContacts from './pages/EmergencyContacts';
 import Schemes from './pages/Schemes';
 import VillageDirectory from './pages/VillageDirectory';
+import LandingPage from './pages/LandingPage';
 import Chatbot from './components/Chatbot';
 import { useState, useEffect } from 'react';
 
@@ -22,9 +23,12 @@ function NavBar({ user, onLogout }) {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
 
+    // Hide navbar entirely on landing page
+    if (!user && location.pathname === '/') return null;
+
     if (!user) return (
         <nav className="navbar">
-            <h1>🏘️ Swatch Village</h1>
+            <Link to="/" style={{ textDecoration: 'none' }}><h1>🏘️ Swatch Village</h1></Link>
         </nav>
     );
 
@@ -32,7 +36,7 @@ function NavBar({ user, onLogout }) {
 
     return (
         <nav className="navbar">
-            <h1>🏘️ Swatch Village</h1>
+            <Link to="/" style={{ textDecoration: 'none' }}><h1>🏘️ Swatch Village</h1></Link>
             <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
                 {menuOpen ? '✕' : '☰'}
             </button>
@@ -84,6 +88,10 @@ function App() {
                 <NavBar user={user} onLogout={handleLogout} />
                 <Routes>
                     <Route
+                        path="/"
+                        element={!user ? <LandingPage /> : <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} />}
+                    />
+                    <Route
                         path="/login"
                         element={!user ? <Login onLogin={handleLogin} /> : <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} />}
                     />
@@ -116,7 +124,7 @@ function App() {
                         path="/directory"
                         element={user ? <VillageDirectory user={user} /> : <Navigate to="/login" />}
                     />
-                    <Route path="*" element={<Navigate to="/login" />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
                 <Chatbot />
             </div>
