@@ -74,9 +74,44 @@ function LandingPage({ user }) {
                     </div>
                 </div>
                 <div className="landing-hero-visual">
-                    <div className="landing-hero-card c1">📋 {t('issueReported')}</div>
-                    <div className="landing-hero-card c2">✅ {t('problemSolved')}</div>
-                    <div className="landing-hero-card c3">📢 {t('newAnnouncement')}</div>
+                    <div className="landing-preview-card">
+                        <div className="landing-preview-header">
+                            <span className="landing-preview-dot red"></span>
+                            <span className="landing-preview-dot yellow"></span>
+                            <span className="landing-preview-dot green"></span>
+                            <span className="landing-preview-title">{t('appName')}</span>
+                        </div>
+                        <div className="landing-preview-body">
+                            <div className="landing-preview-row">
+                                <span className="landing-preview-icon" style={{background:'#fbbf2420',color:'#fbbf24'}}>📋</span>
+                                <div className="landing-preview-info">
+                                    <span className="landing-preview-label">{t('issueReported')}</span>
+                                    <span className="landing-preview-status pending">{t('pending') || 'Pending'}</span>
+                                </div>
+                            </div>
+                            <div className="landing-preview-row">
+                                <span className="landing-preview-icon" style={{background:'#10b98120',color:'#10b981'}}>✅</span>
+                                <div className="landing-preview-info">
+                                    <span className="landing-preview-label">{t('problemSolved')}</span>
+                                    <span className="landing-preview-status solved">{t('resolved') || 'Resolved'}</span>
+                                </div>
+                            </div>
+                            <div className="landing-preview-row">
+                                <span className="landing-preview-icon" style={{background:'#8b5cf620',color:'#8b5cf6'}}>📢</span>
+                                <div className="landing-preview-info">
+                                    <span className="landing-preview-label">{t('newAnnouncement')}</span>
+                                    <span className="landing-preview-status new">{t('new') || 'New'}</span>
+                                </div>
+                            </div>
+                            <div className="landing-preview-row">
+                                <span className="landing-preview-icon" style={{background:'#3b82f620',color:'#3b82f6'}}>🎪</span>
+                                <div className="landing-preview-info">
+                                    <span className="landing-preview-label">{t('communityEvents')}</span>
+                                    <span className="landing-preview-status upcoming">{t('upcoming') || 'Upcoming'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

@@ -44,6 +44,10 @@ const translations = {
     issueReported: 'Issue Reported',
     problemSolved: 'Problem Solved',
     newAnnouncement: 'New Announcement',
+    pending: 'Pending',
+    resolved: 'Resolved',
+    new: 'New',
+    upcoming: 'Upcoming',
 
     // Features
     reportIssues: 'Report Issues',
@@ -187,6 +191,10 @@ const translations = {
     issueReported: 'సమస్య నివేదించబడింది',
     problemSolved: 'సమస్య పరిష్కరించబడింది',
     newAnnouncement: 'కొత్త ప్రకటన',
+    pending: 'పెండింగ్',
+    resolved: 'పరిష్కరించబడింది',
+    new: 'కొత్త',
+    upcoming: 'రాబోతోంది',
 
     // Features
     reportIssues: 'సమస్యలను నివేదించండి',
