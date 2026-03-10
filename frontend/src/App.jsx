@@ -23,7 +23,7 @@ function NavBar({ user, onLogout }) {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
 
-    // Hide navbar entirely on landing page
+    // Hide navbar on landing page for non-logged-in users
     if (!user && location.pathname === '/') return null;
 
     if (!user) return (
@@ -41,6 +41,9 @@ function NavBar({ user, onLogout }) {
                 {menuOpen ? '✕' : '☰'}
             </button>
             <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+                <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>
+                    🏠 Home
+                </Link>
                 <Link to={dashLink} className={`nav-link ${location.pathname === dashLink ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>
                     {user.role === 'admin' ? '🛡️' : '📋'} Dashboard
                 </Link>
@@ -89,11 +92,11 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={!user ? <LandingPage /> : <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} />}
+                        element={<LandingPage user={user} />}
                     />
                     <Route
                         path="/login"
-                        element={!user ? <Login onLogin={handleLogin} /> : <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} />}
+                        element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />}
                     />
                     <Route
                         path="/dashboard"

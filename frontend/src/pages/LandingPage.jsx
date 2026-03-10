@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 
 const features = [
     {
@@ -46,7 +47,19 @@ const stats = [
     { value: '📍', label: 'GPS Tracking' },
 ];
 
-function LandingPage() {
+const featureLinks = {
+    'Report Issues': '/dashboard',
+    'Announcements': '/announcements',
+    'Community Events': '/events',
+    'Emergency Contacts': '/emergency',
+    'Government Schemes': '/schemes',
+    'Village Directory': '/directory',
+};
+
+function LandingPage({ user }) {
+    const isLoggedIn = !!user;
+    const dashLink = user?.role === 'admin' ? '/admin' : '/dashboard';
+
     return (
         <div className="landing">
             {/* Hero */}
@@ -62,9 +75,15 @@ function LandingPage() {
                         access services, and build a better community together.
                     </p>
                     <div className="landing-cta">
-                        <Link to="/login" className="landing-btn primary">
-                            Get Started →
-                        </Link>
+                        {isLoggedIn ? (
+                            <Link to={dashLink} className="landing-btn primary">
+                                Go to Dashboard →
+                            </Link>
+                        ) : (
+                            <Link to="/login" className="landing-btn primary">
+                                Get Started →
+                            </Link>
+                        )}
                         <a href="#features" className="landing-btn secondary">
                             Explore Features
                         </a>
@@ -95,10 +114,11 @@ function LandingPage() {
                 </p>
                 <div className="landing-features-grid">
                     {features.map((f, i) => (
-                        <div
+                        <Link
                             key={i}
+                            to={isLoggedIn ? (featureLinks[f.title] || dashLink) : '/login'}
                             className="landing-feature-card"
-                            style={{ animationDelay: `${i * 80}ms` }}
+                            style={{ animationDelay: `${i * 80}ms`, textDecoration: 'none', color: 'inherit' }}
                         >
                             <div
                                 className="landing-feature-icon"
@@ -108,7 +128,7 @@ function LandingPage() {
                             </div>
                             <h3>{f.title}</h3>
                             <p>{f.desc}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>
@@ -139,10 +159,10 @@ function LandingPage() {
 
             {/* CTA Banner */}
             <section className="landing-cta-banner">
-                <h2>Ready to Make Your Village Smarter?</h2>
-                <p>Join Swatch Village today and be part of the digital transformation.</p>
-                <Link to="/login" className="landing-btn primary large">
-                    Create Your Account →
+                <h2>{isLoggedIn ? 'Explore Your Village Dashboard' : 'Ready to Make Your Village Smarter?'}</h2>
+                <p>{isLoggedIn ? 'Access all services, report issues, and stay connected with your community.' : 'Join Swatch Village today and be part of the digital transformation.'}</p>
+                <Link to={isLoggedIn ? dashLink : '/login'} className="landing-btn primary large">
+                    {isLoggedIn ? 'Open Dashboard →' : 'Create Your Account →'}
                 </Link>
             </section>
 
