@@ -13,19 +13,19 @@ const quickLinks = [
 
 const villageImages = [
     {
-        url: 'https://images.unsplash.com/photo-1625504615927-c14f4f309b63?w=800&q=80',
+        url: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200&q=80',
         caption: 'Our Beautiful Village Life',
     },
     {
-        url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+        url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80',
         caption: 'Green Fields & Farmlands',
     },
     {
-        url: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80',
+        url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80',
         caption: 'Harvest Season Joy',
     },
     {
-        url: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
+        url: 'https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1200&q=80',
         caption: 'Village Community Together',
     },
 ];
