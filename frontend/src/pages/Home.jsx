@@ -1,53 +1,42 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const quickLinks = [
-    { path: '/dashboard', emoji: '📋', label: 'Report Issue', color: '#3b82f6', desc: 'Report a civic problem' },
-    { path: '/announcements', emoji: '📢', label: 'Announcements', color: '#8b5cf6', desc: 'Latest village notices' },
-    { path: '/events', emoji: '🎪', label: 'Events', color: '#ec4899', desc: 'Upcoming gatherings' },
-    { path: '/emergency', emoji: '🆘', label: 'Emergency', color: '#ef4444', desc: 'Important contacts' },
-    { path: '/schemes', emoji: '🏛️', label: 'Schemes', color: '#f59e0b', desc: 'Govt. benefits' },
-    { path: '/directory', emoji: '🏪', label: 'Directory', color: '#10b981', desc: 'Local businesses' },
-];
-
-const villageImages = [
-    {
-        url: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200&q=80',
-        caption: 'Our Beautiful Village Life',
-    },
-    {
-        url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80',
-        caption: 'Green Fields & Farmlands',
-    },
-    {
-        url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80',
-        caption: 'Harvest Season Joy',
-    },
-    {
-        url: 'https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1200&q=80',
-        caption: 'Village Community Together',
-    },
-];
-
-const tips = [
-    '💡 Keep your surroundings clean — report garbage dumping issues through the app.',
-    '💧 Save water — report any leaking pipes or broken taps immediately.',
-    '🌳 Plant a tree this season and help make our village greener!',
-    '🚶 Walk or cycle for short distances — stay healthy, reduce pollution.',
-    '📱 Share the Swatch Village app with your neighbors for a connected community.',
-    '🔦 Report broken streetlights so they can be fixed before nightfall.',
-];
+import { useApp } from '../AppContext';
 
 function Home({ user }) {
+    const { t } = useApp();
     const [announcements, setAnnouncements] = useState([]);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [dailyTip] = useState(() => tips[Math.floor(Math.random() * tips.length)]);
+
+    const quickLinks = [
+        { path: '/dashboard', emoji: '📋', labelKey: 'reportIssue', color: '#3b82f6', descKey: 'reportCivicProblem' },
+        { path: '/announcements', emoji: '📢', labelKey: 'announcements', color: '#8b5cf6', descKey: 'latestNotices' },
+        { path: '/events', emoji: '🎪', labelKey: 'events', color: '#ec4899', descKey: 'upcomingGatherings' },
+        { path: '/emergency', emoji: '🆘', labelKey: 'emergency', color: '#ef4444', descKey: 'importantContacts' },
+        { path: '/schemes', emoji: '🏛️', labelKey: 'schemes', color: '#f59e0b', descKey: 'govtBenefits' },
+        { path: '/directory', emoji: '🏪', labelKey: 'directory', color: '#10b981', descKey: 'localBusinesses' },
+    ];
+
+    const villageImages = [
+        { url: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200&q=80', captionKey: 'ourBeautifulVillage' },
+        { url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80', captionKey: 'greenFields' },
+        { url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80', captionKey: 'harvestSeason' },
+        { url: 'https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1200&q=80', captionKey: 'villageCommunity' },
+    ];
+
+    const tipKeys = ['tip1', 'tip2', 'tip3', 'tip4', 'tip5', 'tip6'];
+    const [dailyTipKey] = useState(() => tipKeys[Math.floor(Math.random() * tipKeys.length)]);
 
     const dashLink = user?.role === 'admin' ? '/admin' : '/dashboard';
-    const greeting = getGreeting();
+
+    function getGreeting() {
+        const h = new Date().getHours();
+        if (h < 12) return `🌅 ${t('goodMorning')}`;
+        if (h < 17) return `☀️ ${t('goodAfternoon')}`;
+        return `🌙 ${t('goodEvening')}`;
+    }
 
     useEffect(() => {
         Promise.all([
@@ -81,16 +70,16 @@ function Home({ user }) {
                     ))}
                     <div className="home-slide-overlay" />
                     <div className="home-banner-content">
-                        <p className="home-greeting">{greeting}</p>
-                        <h1>Welcome back, <span>{user?.username}</span> 👋</h1>
+                        <p className="home-greeting">{getGreeting()}</p>
+                        <h1>{t('welcomeBack')} <span>{user?.username}</span> 👋</h1>
                         <p className="home-banner-sub">
                             {user?.role === 'admin'
-                                ? 'Manage your village, review issues, and keep the community informed.'
-                                : `Ward ${user?.wardNumber} · Stay connected with your village community.`
+                                ? t('adminBannerSub')
+                                : `${t('ward')} ${user?.wardNumber} · ${t('citizenBannerSub')}`
                             }
                         </p>
                         <Link to={dashLink} className="home-dash-btn">
-                            {user?.role === 'admin' ? '🛡️ Admin Dashboard' : '📋 My Dashboard'} →
+                            {user?.role === 'admin' ? `🛡️ ${t('adminDashboard')}` : `📋 ${t('myDashboard')}`} →
                         </Link>
                     </div>
                     <div className="home-slide-dots">
@@ -108,14 +97,14 @@ function Home({ user }) {
             {/* Daily Tip */}
             <section className="home-tip">
                 <div className="home-tip-card">
-                    <span className="home-tip-label">🌟 Tip of the Day</span>
-                    <p>{dailyTip}</p>
+                    <span className="home-tip-label">🌟 {t('tipOfTheDay')}</span>
+                    <p>{t(dailyTipKey)}</p>
                 </div>
             </section>
 
             {/* Quick Access Grid */}
             <section className="home-quick">
-                <h2>Quick Access</h2>
+                <h2>{t('quickAccess')}</h2>
                 <div className="home-quick-grid">
                     {quickLinks.map((ql, i) => (
                         <Link
@@ -128,8 +117,8 @@ function Home({ user }) {
                                 {ql.emoji}
                             </div>
                             <div className="home-quick-info">
-                                <h3>{ql.label}</h3>
-                                <p>{ql.desc}</p>
+                                <h3>{t(ql.labelKey)}</h3>
+                                <p>{t(ql.descKey)}</p>
                             </div>
                             <span className="home-quick-arrow" style={{ color: ql.color }}>→</span>
                         </Link>
@@ -142,14 +131,14 @@ function Home({ user }) {
                 {/* Announcements Column */}
                 <div className="home-news-col">
                     <div className="home-news-header">
-                        <h2>📢 Latest Announcements</h2>
-                        <Link to="/announcements" className="home-see-all">See All →</Link>
+                        <h2>📢 {t('latestAnnouncements')}</h2>
+                        <Link to="/announcements" className="home-see-all">{t('seeAll')} →</Link>
                     </div>
                     {loading ? (
-                        <div className="home-news-loading">Loading...</div>
+                        <div className="home-news-loading">{t('loading')}</div>
                     ) : announcements.length === 0 ? (
                         <div className="home-news-empty">
-                            <p>📭 No announcements yet</p>
+                            <p>📭 {t('noAnnouncements')}</p>
                         </div>
                     ) : (
                         <div className="home-news-list">
@@ -172,14 +161,14 @@ function Home({ user }) {
                 {/* Events Column */}
                 <div className="home-news-col">
                     <div className="home-news-header">
-                        <h2>🎪 Upcoming Events</h2>
-                        <Link to="/events" className="home-see-all">See All →</Link>
+                        <h2>🎪 {t('upcomingEvents')}</h2>
+                        <Link to="/events" className="home-see-all">{t('seeAll')} →</Link>
                     </div>
                     {loading ? (
-                        <div className="home-news-loading">Loading...</div>
+                        <div className="home-news-loading">{t('loading')}</div>
                     ) : events.length === 0 ? (
                         <div className="home-news-empty">
-                            <p>📅 No upcoming events</p>
+                            <p>📅 {t('noUpcomingEvents')}</p>
                         </div>
                     ) : (
                         <div className="home-news-list">
@@ -205,12 +194,12 @@ function Home({ user }) {
 
             {/* Village Gallery */}
             <section className="home-gallery">
-                <h2>🏘️ Village Glimpses</h2>
+                <h2>🏘️ {t('villageGlimpses')}</h2>
                 <div className="home-gallery-grid">
                     {villageImages.map((img, i) => (
                         <div key={i} className="home-gallery-item" style={{ animationDelay: `${i * 100}ms` }}>
-                            <img src={img.url} alt={img.caption} loading="lazy" />
-                            <div className="home-gallery-caption">{img.caption}</div>
+                            <img src={img.url} alt={t(img.captionKey)} loading="lazy" />
+                            <div className="home-gallery-caption">{t(img.captionKey)}</div>
                         </div>
                     ))}
                 </div>
@@ -218,17 +207,10 @@ function Home({ user }) {
 
             {/* Footer */}
             <footer className="home-footer">
-                <p>🏘️ Swatch Village · Serving our community with ❤️ · © {new Date().getFullYear()}</p>
+                <p>🏘️ {t('appName')} · {t('servingCommunity')} · © {new Date().getFullYear()}</p>
             </footer>
         </div>
     );
-}
-
-function getGreeting() {
-    const h = new Date().getHours();
-    if (h < 12) return '🌅 Good Morning';
-    if (h < 17) return '☀️ Good Afternoon';
-    return '🌙 Good Evening';
 }
 
 function getCategoryColor(cat) {

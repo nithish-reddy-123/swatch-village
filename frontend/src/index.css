@@ -77,6 +77,97 @@
   --duration-slow: 400ms;
 }
 
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --gray-50: #1e293b;
+  --gray-100: #1e293b;
+  --gray-200: #334155;
+  --gray-300: #475569;
+  --gray-400: #94a3b8;
+  --gray-500: #94a3b8;
+  --gray-600: #cbd5e1;
+  --gray-700: #e2e8f0;
+  --gray-800: #f1f5f9;
+  --gray-900: #f8fafc;
+
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #243247;
+  --bg-glass: rgba(30, 41, 59, 0.85);
+
+  --success-light: rgba(16, 185, 129, 0.15);
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --danger-light: rgba(239, 68, 68, 0.15);
+  --info-light: rgba(59, 130, 246, 0.15);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 20px rgba(15, 157, 132, 0.25);
+}
+
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(15, 157, 132, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+}
+
+[data-theme="dark"] .login-container::before {
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .landing-hero-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1a3a4a 50%, #0f172a 100%);
+}
+
+[data-theme="dark"] .landing-hero-card {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .landing-stat {
+  background: rgba(30, 41, 59, 0.7);
+}
+
+[data-theme="dark"] .landing-cta-banner {
+  background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+}
+
+[data-theme="dark"] .home-slide-overlay {
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+[data-theme="dark"] .home-tip-card {
+  background: linear-gradient(135deg, rgba(15, 157, 132, 0.15), rgba(59, 130, 246, 0.1));
+  border-color: rgba(15, 157, 132, 0.3);
+}
+
+[data-theme="dark"] .home-quick-card {
+  border-color: var(--gray-200);
+}
+
+[data-theme="dark"] .home-quick-card:hover {
+  border-color: var(--primary-500);
+}
+
+[data-theme="dark"] .filter-chip {
+  border-color: var(--gray-300);
+  color: var(--gray-600);
+}
+
+[data-theme="dark"] .filter-chip.active {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+  color: #fff;
+}
+
+[data-theme="dark"] img {
+  opacity: 0.9;
+}
+
 /* ===== RESET & BASE ===== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -233,6 +324,58 @@ body {
   color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ===== TOGGLE CONTROLS (Lang + Theme) ===== */
+.nav-toggles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+}
+
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: var(--gray-100);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.toggle-btn:hover {
+  border-color: var(--primary-400);
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+.toggle-btn.active {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: #fff;
+}
+
+.toggle-btn .toggle-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+/* Landing page floating toggles (visible when navbar is hidden) */
+.landing-toggles {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 1100;
+  display: flex;
+  gap: 8px;
 }
 
 /* ===== BUTTONS – Global ===== */

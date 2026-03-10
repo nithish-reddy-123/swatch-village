@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useApp } from '../AppContext';
 
 function AdminLogin({ onLogin }) {
+    const { t } = useApp();
     const [formData, setFormData] = useState({ username: '', password: '' });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +17,7 @@ function AdminLogin({ onLogin }) {
             const res = await axios.post('http://localhost:5000/api/auth/login', formData);
 
             if (res.data.role !== 'admin') {
-                setError('This portal is for administrators only.');
+                setError(t('adminOnlyPortal'));
                 setIsLoading(false);
                 return;
             }
@@ -32,42 +34,40 @@ function AdminLogin({ onLogin }) {
         <div className="login-page">
             <div className="login-container admin-login">
                 <div className="admin-login-badge">🛡️</div>
-                <h2>Admin Portal</h2>
-                <p className="login-subtitle">
-                    Authorized personnel only. Enter your admin credentials to access the management dashboard.
-                </p>
+                <h2>{t('adminPortal')}</h2>
+                <p className="login-subtitle">{t('adminLoginSubtitle')}</p>
 
                 {error && <p className="error">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Admin Username</label>
+                        <label>{t('adminUsername')}</label>
                         <input
                             type="text"
                             value={formData.username}
                             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                            placeholder="Enter admin username"
+                            placeholder={t('enterAdminUsername')}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label>{t('password')}</label>
                         <input
                             type="password"
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            placeholder="Enter admin password"
+                            placeholder={t('enterAdminPassword')}
                             required
                         />
                     </div>
 
                     <button type="submit" disabled={isLoading} style={{ width: '100%', marginTop: 8 }}>
-                        {isLoading ? 'Authenticating...' : '🔐 Sign In as Admin'}
+                        {isLoading ? t('authenticating') : `🔐 ${t('signInAsAdmin')}`}
                     </button>
                 </form>
 
                 <p className="admin-login-note">
-                    👤 Are you a citizen? <a href="/login">Login here</a>
+                    👤 {t('areYouCitizen')} <a href="/login">{t('loginHere')}</a>
                 </p>
             </div>
         </div>

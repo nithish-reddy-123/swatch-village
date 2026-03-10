@@ -1,103 +1,82 @@
 import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
-
-const features = [
-    {
-        emoji: '📋',
-        title: 'Report Issues',
-        desc: 'Report civic problems like road damage, water supply issues, and more with photos and GPS location.',
-        color: '#3b82f6',
-    },
-    {
-        emoji: '📢',
-        title: 'Announcements',
-        desc: 'Stay informed with the latest notices, urgent alerts, and panchayat meeting updates.',
-        color: '#8b5cf6',
-    },
-    {
-        emoji: '🎪',
-        title: 'Community Events',
-        desc: 'Discover upcoming festivals, health camps, sports events, and cultural gatherings in the village.',
-        color: '#ec4899',
-    },
-    {
-        emoji: '🆘',
-        title: 'Emergency Contacts',
-        desc: 'Quick access to police, hospital, fire station, ambulance, and essential village service numbers.',
-        color: '#ef4444',
-    },
-    {
-        emoji: '🏛️',
-        title: 'Government Schemes',
-        desc: 'Explore government benefits and schemes available for agriculture, health, education, and more.',
-        color: '#f59e0b',
-    },
-    {
-        emoji: '🏪',
-        title: 'Village Directory',
-        desc: 'Find local shops, services, medical stores, and businesses right in your neighborhood.',
-        color: '#10b981',
-    },
-];
-
-const stats = [
-    { value: '100%', label: 'Transparent' },
-    { value: '24/7', label: 'Accessible' },
-    { value: '🤖', label: 'AI Chatbot' },
-    { value: '📍', label: 'GPS Tracking' },
-];
-
-const featureLinks = {
-    'Report Issues': '/dashboard',
-    'Announcements': '/announcements',
-    'Community Events': '/events',
-    'Emergency Contacts': '/emergency',
-    'Government Schemes': '/schemes',
-    'Village Directory': '/directory',
-};
+import { useApp } from '../AppContext';
 
 function LandingPage({ user }) {
+    const { t, lang, theme, toggleLang, toggleTheme } = useApp();
     const isLoggedIn = !!user;
     const dashLink = user?.role === 'admin' ? '/admin' : '/dashboard';
 
+    const features = [
+        { emoji: '📋', title: t('reportIssues'), desc: t('reportIssuesDesc'), color: '#3b82f6' },
+        { emoji: '📢', title: t('announcements'), desc: t('announcementsDesc'), color: '#8b5cf6' },
+        { emoji: '🎪', title: t('communityEvents'), desc: t('communityEventsDesc'), color: '#ec4899' },
+        { emoji: '🆘', title: t('emergencyContacts'), desc: t('emergencyContactsDesc'), color: '#ef4444' },
+        { emoji: '🏛️', title: t('governmentSchemes'), desc: t('governmentSchemesDesc'), color: '#f59e0b' },
+        { emoji: '🏪', title: t('villageDirectory'), desc: t('villageDirectoryDesc'), color: '#10b981' },
+    ];
+
+    const stats = [
+        { value: '100%', label: t('transparent') },
+        { value: '24/7', label: t('accessible') },
+        { value: '🤖', label: t('aiChatbot') },
+        { value: '📍', label: t('gpsTracking') },
+    ];
+
+    const featureLinks = {
+        [t('reportIssues')]: '/dashboard',
+        [t('announcements')]: '/announcements',
+        [t('communityEvents')]: '/events',
+        [t('emergencyContacts')]: '/emergency',
+        [t('governmentSchemes')]: '/schemes',
+        [t('villageDirectory')]: '/directory',
+    };
+
     return (
         <div className="landing">
+            {/* Floating toggles for landing page (no navbar) */}
+            <div className="landing-toggles">
+                <button className="toggle-btn" onClick={toggleLang} title="Switch language">
+                    <span className="toggle-icon">🌐</span> {lang === 'en' ? 'తెలుగు' : 'ENG'}
+                </button>
+                <button className="toggle-btn" onClick={toggleTheme} title="Switch theme">
+                    <span className="toggle-icon">{theme === 'light' ? '🌙' : '☀️'}</span>
+                    {theme === 'light' ? t('darkMode') : t('lightMode')}
+                </button>
+            </div>
+
             {/* Hero */}
             <section className="landing-hero">
                 <div className="landing-hero-bg" />
                 <div className="landing-hero-content">
-                    <span className="landing-badge">🏘️ Digital Village Platform</span>
+                    <span className="landing-badge">🏘️ {t('digitalVillagePlatform')}</span>
                     <h1>
-                        Welcome to <span className="landing-brand">Swatch Village</span>
+                        {t('welcomeTo')} <span className="landing-brand">{t('appName')}</span>
                     </h1>
-                    <p className="landing-tagline">
-                        Empowering villages with technology — report problems, stay informed, 
-                        access services, and build a better community together.
-                    </p>
+                    <p className="landing-tagline">{t('landingTagline')}</p>
                     <div className="landing-cta">
                         {isLoggedIn ? (
                             <Link to={dashLink} className="landing-btn primary">
-                                Go to Dashboard →
+                                {t('goToDashboard')} →
                             </Link>
                         ) : (
                             <>
                                 <Link to="/login" className="landing-btn primary">
-                                    👤 Citizen Login
+                                    👤 {t('citizenLogin')}
                                 </Link>
                                 <Link to="/admin-login" className="landing-btn secondary">
-                                    🛡️ Admin Login
+                                    🛡️ {t('adminLogin')}
                                 </Link>
                             </>
                         )}
                         <a href="#features" className="landing-btn outline">
-                            Explore Features ↓
+                            {t('exploreFeatures')} ↓
                         </a>
                     </div>
                 </div>
                 <div className="landing-hero-visual">
-                    <div className="landing-hero-card c1">📋 Issue Reported</div>
-                    <div className="landing-hero-card c2">✅ Problem Solved</div>
-                    <div className="landing-hero-card c3">📢 New Announcement</div>
+                    <div className="landing-hero-card c1">📋 {t('issueReported')}</div>
+                    <div className="landing-hero-card c2">✅ {t('problemSolved')}</div>
+                    <div className="landing-hero-card c3">📢 {t('newAnnouncement')}</div>
                 </div>
             </section>
 
@@ -113,10 +92,8 @@ function LandingPage({ user }) {
 
             {/* Features */}
             <section className="landing-features" id="features">
-                <h2>Everything Your Village Needs</h2>
-                <p className="landing-features-sub">
-                    A complete digital ecosystem to connect villagers, administrators, and services.
-                </p>
+                <h2>{t('everythingVillageNeeds')}</h2>
+                <p className="landing-features-sub">{t('featuresSubtitle')}</p>
                 <div className="landing-features-grid">
                     {features.map((f, i) => (
                         <Link
@@ -125,10 +102,7 @@ function LandingPage({ user }) {
                             className="landing-feature-card"
                             style={{ animationDelay: `${i * 80}ms`, textDecoration: 'none', color: 'inherit' }}
                         >
-                            <div
-                                className="landing-feature-icon"
-                                style={{ background: f.color + '14', color: f.color }}
-                            >
+                            <div className="landing-feature-icon" style={{ background: f.color + '14', color: f.color }}>
                                 {f.emoji}
                             </div>
                             <h3>{f.title}</h3>
@@ -140,43 +114,43 @@ function LandingPage({ user }) {
 
             {/* How It Works */}
             <section className="landing-how">
-                <h2>How It Works</h2>
+                <h2>{t('howItWorks')}</h2>
                 <div className="landing-steps">
                     <div className="landing-step">
                         <div className="landing-step-num">1</div>
-                        <h3>Sign Up</h3>
-                        <p>Create your account with your ward number to get started in seconds.</p>
+                        <h3>{t('signUp')}</h3>
+                        <p>{t('signUpDesc')}</p>
                     </div>
                     <div className="landing-step-arrow">→</div>
                     <div className="landing-step">
                         <div className="landing-step-num">2</div>
-                        <h3>Report & Explore</h3>
-                        <p>Report problems, browse events, find contacts, and discover government schemes.</p>
+                        <h3>{t('reportAndExplore')}</h3>
+                        <p>{t('reportAndExploreDesc')}</p>
                     </div>
                     <div className="landing-step-arrow">→</div>
                     <div className="landing-step">
                         <div className="landing-step-num">3</div>
-                        <h3>Track & Resolve</h3>
-                        <p>Admins resolve issues, post announcements, and keep the village running smoothly.</p>
+                        <h3>{t('trackAndResolve')}</h3>
+                        <p>{t('trackAndResolveDesc')}</p>
                     </div>
                 </div>
             </section>
 
             {/* CTA Banner */}
             <section className="landing-cta-banner">
-                <h2>{isLoggedIn ? 'Explore Your Village Dashboard' : 'Ready to Make Your Village Smarter?'}</h2>
-                <p>{isLoggedIn ? 'Access all services, report issues, and stay connected with your community.' : 'Join Swatch Village today and be part of the digital transformation.'}</p>
+                <h2>{isLoggedIn ? t('exploreVillageDashboard') : t('readyToMakeSmarter')}</h2>
+                <p>{isLoggedIn ? t('accessAllServices') : t('joinSwatchVillage')}</p>
                 {isLoggedIn ? (
                     <Link to={dashLink} className="landing-btn primary large">
-                        Open Dashboard →
+                        {t('openDashboard')} →
                     </Link>
                 ) : (
                     <div className="landing-cta" style={{ justifyContent: 'center' }}>
                         <Link to="/login" className="landing-btn primary large">
-                            👤 Citizen Sign Up
+                            👤 {t('citizenSignUp')}
                         </Link>
                         <Link to="/admin-login" className="landing-btn secondary large">
-                            🛡️ Admin Login
+                            🛡️ {t('adminLogin')}
                         </Link>
                     </div>
                 )}
@@ -184,8 +158,8 @@ function LandingPage({ user }) {
 
             {/* Footer */}
             <footer className="landing-footer">
-                <div className="landing-footer-brand">🏘️ Swatch Village</div>
-                <p>Built with ❤️ for Indian villages · © {new Date().getFullYear()}</p>
+                <div className="landing-footer-brand">🏘️ {t('appName')}</div>
+                <p>{t('builtWithLove')} · © {new Date().getFullYear()}</p>
             </footer>
         </div>
     );

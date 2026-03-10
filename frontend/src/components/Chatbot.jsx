@@ -1,14 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import { useApp } from '../AppContext';
 
 const Chatbot = () => {
+    const { t } = useApp();
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([
-        { text: "Hi! 👋 I'm your Swatch Village assistant. How can I help you today?", sender: 'bot' }
-    ]);
+    const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
+    const welcomeSet = useRef(false);
+
+    useEffect(() => {
+        if (!welcomeSet.current) {
+            setMessages([{ text: t('chatWelcome'), sender: 'bot' }]);
+            welcomeSet.current = true;
+        }
+    }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -37,7 +45,7 @@ const Chatbot = () => {
             setMessages((prev) => [...prev, botMessage]);
         } catch (error) {
             console.error('Error sending message:', error);
-            const errorMessage = { text: 'Sorry, something went wrong. Please try again.', sender: 'bot' };
+            const errorMessage = { text: t('chatError'), sender: 'bot' };
             setMessages((prev) => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
@@ -58,8 +66,8 @@ const Chatbot = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         <div style={styles.headerIcon}>🤖</div>
                         <div>
-                            <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>AI Assistant</div>
-                            <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>Powered by Gemini</div>
+                        <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{t('chatAssistant')}</div>
+                        <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>{t('chatOnline')}</div>
                         </div>
                     </div>
                     <button onClick={toggleChat} style={styles.closeButton} title="Close chat">
@@ -103,7 +111,7 @@ const Chatbot = () => {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message..."
+                        placeholder={t('chatPlaceholder')}
                         style={styles.input}
                     />
                     <button type="submit" style={styles.sendButton} disabled={isLoading || !input.trim()}>
