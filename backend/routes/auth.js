@@ -2,21 +2,36 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// Register (for testing/seeding)
+// Register
 router.post('/register', async (req, res) => {
     try {
         const { username, password, role, wardNumber } = req.body;
 
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
         // Check if user already exists
         const existingUser = await User.findOne({ username });
         if (existingUser) {
-            return res.status(400).json({ error: 'user already exists please login' });
+            return res.status(400).json({ error: 'User already exists, please login' });
         }
 
-        const user = new User({ username, password, role, wardNumber });
+        const userData = { username, password, role: role || 'user' };
+
+        // Only include wardNumber for users
+        if (userData.role === 'user') {
+            if (!wardNumber) {
+                return res.status(400).json({ error: 'Ward number is required for users' });
+            }
+            userData.wardNumber = Number(wardNumber);
+        }
+
+        const user = new User(userData);
         await user.save();
         res.status(201).json(user);
     } catch (error) {
+        console.error('Registration error:', error);
         res.status(400).json({ error: error.message });
     }
 });

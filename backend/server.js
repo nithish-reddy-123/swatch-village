@@ -24,10 +24,20 @@ mongoose.connect(MONGODB_URI)
 const authRoutes = require('./routes/auth');
 const problemRoutes = require('./routes/problems');
 const chatRoutes = require('./routes/chat');
+const announcementRoutes = require('./routes/announcements');
+const eventRoutes = require('./routes/events');
+const emergencyContactRoutes = require('./routes/emergencyContacts');
+const schemeRoutes = require('./routes/schemes');
+const directoryRoutes = require('./routes/directory');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/problems', problemRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/announcements', announcementRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/emergency-contacts', emergencyContactRoutes);
+app.use('/api/schemes', schemeRoutes);
+app.use('/api/directory', directoryRoutes);
 
 app.get('/', (req, res) => {
     res.send('Swatch Village Backend is running');

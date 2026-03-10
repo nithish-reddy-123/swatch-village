@@ -10,18 +10,25 @@ function Login({ onLogin }) {
         wardNumber: ''
     });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setIsLoading(true);
 
         try {
-            const endpoint = isRegistering ? 'https://swatch-village.onrender.com/api/auth/register' : 'https://swatch-village.onrender.com/api/auth/login';
-            // const endpoint = isRegistering ? 'http://localhost:5000/api/auth/register' : 'http://localhost:5000/api/auth/login';
-            const res = await axios.post(endpoint, formData);
+            const endpoint = isRegistering ? 'http://localhost:5000/api/auth/register' : 'http://localhost:5000/api/auth/login';
+
+            // Build payload – don't send wardNumber for admin registration
+            let payload = { ...formData };
+            if (isRegistering && payload.role === 'admin') {
+                delete payload.wardNumber;
+            }
+
+            const res = await axios.post(endpoint, payload);
 
             if (isRegistering) {
-                // Auto login after register or just switch to login
                 setIsRegistering(false);
                 alert('Registration successful! Please login.');
             } else {
@@ -30,72 +37,83 @@ function Login({ onLogin }) {
         } catch (err) {
             console.log("Error during authentication:", err);
             setError(err.response?.data?.error || 'An error occurred');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="login-container">
-            <h2>{isRegistering ? 'Register' : 'Login'}</h2>
-            {error && <p className="error">{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        value={formData.username}
-                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        required
-                    />
-                </div>
-                {/* <div className="form-group">
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                    />
-                    </div> */}
-                {isRegistering && (
-                    <>
-                        <div className="form-group">
-                            <label>Role</label>
-                            <select
-                                value={formData.role}
-                                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                            >
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        {formData.role === 'user' && (
-                            <div className="form-group">
-                                <label>Ward Number</label>
-                                <input
-                                    type="number"
-                                    value={formData.wardNumber}
-                                    onChange={(e) => setFormData({ ...formData, wardNumber: e.target.value })}
-                                    required
-                                />
-                            </div>
-                        )}
-                    </>
-                )}
+        <div className="login-page">
+            <div className="login-container">
+                <h2>{isRegistering ? '✨ Create Account' : '👋 Welcome Back'}</h2>
+                <p className="login-subtitle">
+                    {isRegistering
+                        ? 'Join your community and help make your village better.'
+                        : 'Sign in to report issues and track progress in your village.'}
+                </p>
 
-                <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
-            </form>
-            <p onClick={() => setIsRegistering(!isRegistering)} className="toggle-auth">
-                {isRegistering ? 'Already have an account? Login' : 'Need an account? Register'}
-            </p>
+                {error && <p className="error">{error}</p>}
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            value={formData.username}
+                            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                            placeholder="Enter your username"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+
+                    {isRegistering && (
+                        <>
+                            <div className="form-group">
+                                <label>Role</label>
+                                <select
+                                    value={formData.role}
+                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                                >
+                                    <option value="user">🏠 Citizen</option>
+                                    <option value="admin">🛡️ Administrator</option>
+                                </select>
+                            </div>
+                            {formData.role === 'user' && (
+                                <div className="form-group">
+                                    <label>Ward Number</label>
+                                    <input
+                                        type="number"
+                                        value={formData.wardNumber}
+                                        onChange={(e) => setFormData({ ...formData, wardNumber: e.target.value })}
+                                        placeholder="Enter your ward number"
+                                        required
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    <button type="submit" disabled={isLoading} style={{ width: '100%', marginTop: 8 }}>
+                        {isLoading
+                            ? (isRegistering ? 'Creating Account...' : 'Signing In...')
+                            : (isRegistering ? 'Create Account' : 'Sign In')}
+                    </button>
+                </form>
+
+                <p onClick={() => setIsRegistering(!isRegistering)} className="toggle-auth">
+                    {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
+                </p>
+            </div>
         </div>
     );
 }
