@@ -80,12 +80,17 @@ function LandingPage({ user }) {
                                 Go to Dashboard →
                             </Link>
                         ) : (
-                            <Link to="/login" className="landing-btn primary">
-                                Get Started →
-                            </Link>
+                            <>
+                                <Link to="/login" className="landing-btn primary">
+                                    👤 Citizen Login
+                                </Link>
+                                <Link to="/admin-login" className="landing-btn secondary">
+                                    🛡️ Admin Login
+                                </Link>
+                            </>
                         )}
-                        <a href="#features" className="landing-btn secondary">
-                            Explore Features
+                        <a href="#features" className="landing-btn outline">
+                            Explore Features ↓
                         </a>
                     </div>
                 </div>
@@ -161,9 +166,20 @@ function LandingPage({ user }) {
             <section className="landing-cta-banner">
                 <h2>{isLoggedIn ? 'Explore Your Village Dashboard' : 'Ready to Make Your Village Smarter?'}</h2>
                 <p>{isLoggedIn ? 'Access all services, report issues, and stay connected with your community.' : 'Join Swatch Village today and be part of the digital transformation.'}</p>
-                <Link to={isLoggedIn ? dashLink : '/login'} className="landing-btn primary large">
-                    {isLoggedIn ? 'Open Dashboard →' : 'Create Your Account →'}
-                </Link>
+                {isLoggedIn ? (
+                    <Link to={dashLink} className="landing-btn primary large">
+                        Open Dashboard →
+                    </Link>
+                ) : (
+                    <div className="landing-cta" style={{ justifyContent: 'center' }}>
+                        <Link to="/login" className="landing-btn primary large">
+                            👤 Citizen Sign Up
+                        </Link>
+                        <Link to="/admin-login" className="landing-btn secondary large">
+                            🛡️ Admin Login
+                        </Link>
+                    </div>
+                )}
             </section>
 
             {/* Footer */}

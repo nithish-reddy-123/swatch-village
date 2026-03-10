@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
+import AdminLogin from './pages/AdminLogin';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Announcements from './pages/Announcements';
@@ -98,6 +99,10 @@ function App() {
                     <Route
                         path="/login"
                         element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />}
+                    />
+                    <Route
+                        path="/admin-login"
+                        element={!user ? <AdminLogin onLogin={handleLogin} /> : <Navigate to="/" />}
                     />
                     <Route
                         path="/dashboard"

@@ -6,7 +6,6 @@ function Login({ onLogin }) {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        role: 'user',
         wardNumber: ''
     });
     const [error, setError] = useState('');
@@ -18,24 +17,30 @@ function Login({ onLogin }) {
         setIsLoading(true);
 
         try {
-            const endpoint = isRegistering ? 'http://localhost:5000/api/auth/register' : 'http://localhost:5000/api/auth/login';
+            const endpoint = isRegistering
+                ? 'http://localhost:5000/api/auth/register'
+                : 'http://localhost:5000/api/auth/login';
 
-            // Build payload – don't send wardNumber for admin registration
-            let payload = { ...formData };
-            if (isRegistering && payload.role === 'admin') {
-                delete payload.wardNumber;
-            }
+            const payload = isRegistering
+                ? { username: formData.username, password: formData.password, role: 'user', wardNumber: formData.wardNumber }
+                : { username: formData.username, password: formData.password };
 
             const res = await axios.post(endpoint, payload);
 
             if (isRegistering) {
                 setIsRegistering(false);
+                setFormData({ username: '', password: '', wardNumber: '' });
                 alert('Registration successful! Please login.');
             } else {
+                if (res.data.role === 'admin') {
+                    setError('Admins must use the Admin Portal to sign in.');
+                    setIsLoading(false);
+                    return;
+                }
                 onLogin(res.data);
             }
         } catch (err) {
-            console.log("Error during authentication:", err);
+            console.log('Error during authentication:', err);
             setError(err.response?.data?.error || 'An error occurred');
         } finally {
             setIsLoading(false);
@@ -44,8 +49,9 @@ function Login({ onLogin }) {
 
     return (
         <div className="login-page">
-            <div className="login-container">
-                <h2>{isRegistering ? '✨ Create Account' : '👋 Welcome Back'}</h2>
+            <div className="login-container citizen-login">
+                <div className="citizen-login-badge">👤</div>
+                <h2>{isRegistering ? '✨ Create Citizen Account' : '👋 Citizen Login'}</h2>
                 <p className="login-subtitle">
                     {isRegistering
                         ? 'Join your community and help make your village better.'
@@ -77,41 +83,31 @@ function Login({ onLogin }) {
                     </div>
 
                     {isRegistering && (
-                        <>
-                            <div className="form-group">
-                                <label>Role</label>
-                                <select
-                                    value={formData.role}
-                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                                >
-                                    <option value="user">🏠 Citizen</option>
-                                    <option value="admin">🛡️ Administrator</option>
-                                </select>
-                            </div>
-                            {formData.role === 'user' && (
-                                <div className="form-group">
-                                    <label>Ward Number</label>
-                                    <input
-                                        type="number"
-                                        value={formData.wardNumber}
-                                        onChange={(e) => setFormData({ ...formData, wardNumber: e.target.value })}
-                                        placeholder="Enter your ward number"
-                                        required
-                                    />
-                                </div>
-                            )}
-                        </>
+                        <div className="form-group">
+                            <label>Ward Number</label>
+                            <input
+                                type="number"
+                                value={formData.wardNumber}
+                                onChange={(e) => setFormData({ ...formData, wardNumber: e.target.value })}
+                                placeholder="Enter your ward number"
+                                required
+                            />
+                        </div>
                     )}
 
                     <button type="submit" disabled={isLoading} style={{ width: '100%', marginTop: 8 }}>
                         {isLoading
                             ? (isRegistering ? 'Creating Account...' : 'Signing In...')
-                            : (isRegistering ? 'Create Account' : 'Sign In')}
+                            : (isRegistering ? 'Create Account' : 'Sign In as Citizen')}
                     </button>
                 </form>
 
                 <p onClick={() => setIsRegistering(!isRegistering)} className="toggle-auth">
                     {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
+                </p>
+
+                <p className="admin-login-note">
+                    🛡️ Are you an admin? <a href="/admin-login">Login here</a>
                 </p>
             </div>
         </div>

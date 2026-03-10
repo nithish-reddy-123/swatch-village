@@ -17,7 +17,20 @@ const MONGODB_URI = process.env.MONGODB_URI ;
 console.log('Attempting to connect to MongoDB at:', MONGODB_URI);
 
 mongoose.connect(MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        // Seed default admin account if it doesn't exist
+        const User = require('./models/User');
+        const adminExists = await User.findOne({ username: 'admin', role: 'admin' });
+        if (!adminExists) {
+            await User.create({
+                username: 'admin',
+                password: 'admin@village2026',
+                role: 'admin'
+            });
+            console.log('Default admin account created: username=admin');
+        }
+    })
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes

@@ -2,13 +2,17 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// Register
+// Register (citizens only – admin accounts are pre-seeded)
 router.post('/register', async (req, res) => {
     try {
-        const { username, password, role, wardNumber } = req.body;
+        const { username, password, wardNumber } = req.body;
 
         if (!username || !password) {
             return res.status(400).json({ error: 'Username and password are required' });
+        }
+
+        if (!wardNumber) {
+            return res.status(400).json({ error: 'Ward number is required' });
         }
 
         // Check if user already exists
@@ -17,17 +21,12 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: 'User already exists, please login' });
         }
 
-        const userData = { username, password, role: role || 'user' };
-
-        // Only include wardNumber for users
-        if (userData.role === 'user') {
-            if (!wardNumber) {
-                return res.status(400).json({ error: 'Ward number is required for users' });
-            }
-            userData.wardNumber = Number(wardNumber);
-        }
-
-        const user = new User(userData);
+        const user = new User({
+            username,
+            password,
+            role: 'user',
+            wardNumber: Number(wardNumber)
+        });
         await user.save();
         res.status(201).json(user);
     } catch (error) {
