@@ -8,6 +8,7 @@ import EmergencyContacts from './pages/EmergencyContacts';
 import Schemes from './pages/Schemes';
 import VillageDirectory from './pages/VillageDirectory';
 import LandingPage from './pages/LandingPage';
+import Home from './pages/Home';
 import Chatbot from './components/Chatbot';
 import { useState, useEffect } from 'react';
 
@@ -92,7 +93,7 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<LandingPage user={user} />}
+                        element={user ? <Home user={user} /> : <LandingPage />}
                     />
                     <Route
                         path="/login"
