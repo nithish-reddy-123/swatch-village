@@ -123,14 +123,14 @@
 }
 
 [data-theme="dark"] .landing-preview-card {
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(148, 163, 184, 0.15);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.15);
+  background: rgba(30, 41, 59, 0.7);
+  border: none;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .landing-preview-header {
-  background: rgba(15, 23, 42, 0.6);
-  border-color: rgba(148, 163, 184, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: none;
 }
 
 [data-theme="dark"] .landing-preview-row:hover {
@@ -1514,9 +1514,9 @@ button:disabled {
 
 .landing-preview-card {
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 20px;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.06);
-  border: 1px solid var(--gray-100);
+  border: none;
   overflow: hidden;
 }
 
@@ -1524,9 +1524,9 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 12px 18px;
-  background: var(--gray-50);
-  border-bottom: 1px solid var(--gray-100);
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.03);
+  border-bottom: none;
 }
 
 .landing-preview-dot {
